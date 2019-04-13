@@ -1,4 +1,6 @@
 import UIKit
+import MapKit
+import CoreLocation
 
 class BusinessViewController: UIViewController {
     
@@ -16,11 +18,18 @@ class BusinessViewController: UIViewController {
     
     @IBOutlet weak var phoneNumber: UILabel!
     
+    @IBOutlet weak var businessURL: UILabel!
     
-    @IBAction func moreInfoAction(_ sender: UIButton) {
-        print("trying for github")
-    }
+    @IBOutlet weak var businessAddressLabel: UILabel!
     
+    @IBOutlet weak var businessTownLabel: UILabel!
+    
+    @IBOutlet weak var eircodeLabel: UILabel!
+    
+    @IBOutlet weak var mapViewer: MKMapView!
+    
+    
+    @IBOutlet weak var webInfoAction: UIButton!
     
     @IBAction func callButton(_ sender: UIButton) {
         if let url = URL(string: "tel://\(businessManagedObject?.phone)"), UIApplication.shared.canOpenURL(url) {
