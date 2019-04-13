@@ -12,7 +12,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Thread.sleep(forTimeInterval: 1.5)
         
         // Override point for customization after application launch.
-        
+        print("Application did finish launching")
         return true
     }
 
