@@ -18,7 +18,7 @@ class BusinessViewController: UIViewController {
     
     
     @IBAction func moreInfoAction(_ sender: UIButton) {
-        print("This is a Git tutorial")
+        print("trying for github")
     }
     
     
