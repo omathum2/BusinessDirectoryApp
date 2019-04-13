@@ -42,7 +42,6 @@
 		ECFC6B80221B02B400A03795 /* Business.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFC6B7F221B02B400A03795 /* Business.swift */; };
 		ECFC6B82221B050800A03795 /* BusinessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFC6B81221B050800A03795 /* BusinessViewController.swift */; };
 		ECFC6B84221B106A00A03795 /* BusinessTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFC6B83221B106A00A03795 /* BusinessTableViewController.swift */; };
-		ECFC6B86221B149400A03795 /* BusinessDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFC6B85221B149400A03795 /* BusinessDetailsViewController.swift */; };
 		ECFC6B88221B1D0E00A03795 /* BusinessInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFC6B87221B1D0E00A03795 /* BusinessInfo.swift */; };
 		ECFC6B8A221B1E8E00A03795 /* mossy.png in Resources */ = {isa = PBXBuildFile; fileRef = ECFC6B89221B1E8E00A03795 /* mossy.png */; };
 		ECFC6B90221BFDA000A03795 /* XMLBusinessParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFC6B8F221BFDA000A03795 /* XMLBusinessParser.swift */; };
@@ -88,7 +87,6 @@
 		ECFC6B7F221B02B400A03795 /* Business.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Business.swift; sourceTree = "<group>"; };
 		ECFC6B81221B050800A03795 /* BusinessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessViewController.swift; sourceTree = "<group>"; };
 		ECFC6B83221B106A00A03795 /* BusinessTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessTableViewController.swift; sourceTree = "<group>"; };
-		ECFC6B85221B149400A03795 /* BusinessDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessDetailsViewController.swift; sourceTree = "<group>"; };
 		ECFC6B87221B1D0E00A03795 /* BusinessInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessInfo.swift; sourceTree = "<group>"; };
 		ECFC6B89221B1E8E00A03795 /* mossy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mossy.png; sourceTree = "<group>"; };
 		ECFC6B8F221BFDA000A03795 /* XMLBusinessParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLBusinessParser.swift; sourceTree = "<group>"; };
@@ -165,7 +163,6 @@
 				ECFC6B83221B106A00A03795 /* BusinessTableViewController.swift */,
 				ECFC6B81221B050800A03795 /* BusinessViewController.swift */,
 				ECB9BF0F2253B96D00DAA2AD /* AddViewController.swift */,
-				ECFC6B85221B149400A03795 /* BusinessDetailsViewController.swift */,
 				EC010CBA221C28D5003E2448 /* WebViewController.swift */,
 				ECFC6B7F221B02B400A03795 /* Business.swift */,
 				ECFC6B87221B1D0E00A03795 /* BusinessInfo.swift */,
@@ -285,7 +282,6 @@
 				ECFC6B84221B106A00A03795 /* BusinessTableViewController.swift in Sources */,
 				ECFC6B90221BFDA000A03795 /* XMLBusinessParser.swift in Sources */,
 				ECFC6B82221B050800A03795 /* BusinessViewController.swift in Sources */,
-				ECFC6B86221B149400A03795 /* BusinessDetailsViewController.swift in Sources */,
 				ECFC6B6C221AFC7C00A03795 /* AppDelegate.swift in Sources */,
 				ECFC6B88221B1D0E00A03795 /* BusinessInfo.swift in Sources */,
 				EC938F5422537044005A6A19 /* BusinessDirectory.xcdatamodeld in Sources */,

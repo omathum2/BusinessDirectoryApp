@@ -47,22 +47,40 @@ class BusinessViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //moreInfoAction.clipsToBounds = true
-
         // Do any additional setup after loading the view.
         
         self.title = "Business Info"
-        
-        // get the data
-        //businessInfo = Business(name: "Mossy", address: "Watergrasshill", phone: "12345", image: "mossy.png", url: "http://www.mossy.com")
         
 //        print("\n bManObject: ", "\(businessManagedObject)")
         
         // populate the outlets with data
         businessLabel?.text = businessManagedObject?.name
         businessImage?.image = UIImage(named: (businessManagedObject?.image)!)
+        businessURL?.text = businessManagedObject?.url
         phoneNumber?.text = businessManagedObject?.phone
+        businessAddressLabel?.text = businessManagedObject?.address
+        businessTownLabel?.text = businessManagedObject?.town
+        eircodeLabel?.text = businessManagedObject?.eircode
         
+        //map info
+        var location = CLLocationCoordinate2DMake(52.0113806, -8.3527962)
+        
+        var span = MKCoordinateSpan.init(latitudeDelta: 0.02, longitudeDelta: 0.02)
+        
+        var region = MKCoordinateRegion(center: location, span: span)
+        mapViewer.setRegion(region, animated: true)
+        
+        var annotation = MKPointAnnotation()
+        annotation.coordinate = location
+        annotation.title = "Watergrasshill"
+        
+        mapViewer.addAnnotation(annotation)
+        
+        /*
+         //make map clickable
+         mapViewer.isUserInteractionEnabled = true
+         mapViewer.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.imageTap))
+         */
         
         
         
@@ -78,10 +96,10 @@ class BusinessViewController: UIViewController {
         
         
         // Get the new view controller using segue.destination.
-        let destinationController = segue.destination as! BusinessDetailsViewController
+        let destination = segue.destination as! WebViewController
         
         // Pass the selected object to the new view controller.
-        destinationController.businessManagedObject = businessManagedObject
+        destination.urlData = self.businessManagedObject.url
     }
     
     /*

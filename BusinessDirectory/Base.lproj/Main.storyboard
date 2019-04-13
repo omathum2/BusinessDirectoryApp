@@ -122,7 +122,9 @@
                         <color key="backgroundColor" red="0.86951615579999997" green="0.92970620749999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <viewLayoutGuide key="safeArea" id="Fpl-ic-o02"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Business Information" id="BU0-Dn-hEG"/>
+                    <navigationItem key="navigationItem" title="Business Info" id="BU0-Dn-hEG">
+                        <barButtonItem key="rightBarButtonItem" title="Edit Details" id="7cE-NO-Cky"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="businessAddressLabel" destination="Env-WL-Jzs" id="NZj-Lr-yWw"/>
                         <outlet property="businessImage" destination="LPa-X7-YGl" id="X97-uM-qwA"/>
@@ -137,7 +139,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="esr-Qm-1HJ" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1742" y="133"/>
+            <point key="canvasLocation" x="1902" y="387"/>
         </scene>
         <!--Business Table View Controller-->
         <scene sceneID="L4f-nh-guc">
@@ -189,7 +191,13 @@
                             <outlet property="delegate" destination="FuM-Jx-Qkw" id="IbV-ue-OOl"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="gBp-kD-SyY"/>
+                    <navigationItem key="navigationItem" id="gBp-kD-SyY">
+                        <barButtonItem key="rightBarButtonItem" title="+ Add" id="gHz-xp-1S1">
+                            <connections>
+                                <segue destination="C4g-ln-zMJ" kind="show" identifier="addSegue" id="tQ4-C9-C8P"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B1z-Bg-ETV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -248,7 +256,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C00-vA-zEY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2497" y="133"/>
+            <point key="canvasLocation" x="2655" y="387"/>
         </scene>
         <!--Add View Controller-->
         <scene sceneID="IKe-wA-6o0">
@@ -322,7 +330,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x4y-o5-UfZ" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1743" y="814"/>
+            <point key="canvasLocation" x="1902" y="-414"/>
         </scene>
     </scenes>
 </document>
