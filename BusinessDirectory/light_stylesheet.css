@@ -1,0 +1,64 @@
+.column {
+float: left;
+}
+
+/* Left column */
+.column.side {
+width: 25%;
+
+}
+
+/* Middle column */
+.column.middle {
+width: 70%;
+padding-top: 30px;
+overflow: auto; /* ensures scroll bar appears when more content than fits in viewing area */
+}
+
+div {
+
+height: 100vh;
+background-color: rgba(255, 255, 255, 0.8);
+text-align: center;
+
+padding-right: 30px;
+padding-bottom: 50px;
+padding-left: 30px;
+font-size: 18px;
+text-align:left;
+height: 100vh; /* sets height of viewing area */
+
+}
+
+table {
+width: 90%;
+
+}
+
+th {
+text-align: left;
+font-size: 32px;
+}
+
+
+tr {
+
+}
+
+td {
+border: 0px;
+padding: 20px;
+font-size: 32px;
+text-align: center;
+}
+
+a:hover {
+text-decoration: underline;
+}
+
+/* Responsive layout - makes the columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+.column.side, .column.middle {
+  width: 100%;
+}
+}

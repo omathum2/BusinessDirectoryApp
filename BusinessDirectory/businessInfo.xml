@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<people>
+    <person>
+        <name>Sabin Tabirca</name>
+        <address>WGB 1.81, UCC, Cork</address>
+        <phone>1111111</phone>
+        <url>http://www.ucc.ie</url>
+	    <image>sabin.jpg</image>
+	  </person>
+    <person>
+        <name>Sabina Tabirca</name>
+        <address>WGB 1.81, UCC, Cork</address>
+        <phone>122222</phone>
+        <url>http://www.ucc.ie</url>
+        <image>sabin.jpg</image>
+    </person>
+    <person>
+        <name>Sabine Tabirca</name>
+        <address>WGB 1.81, UCC, Cork</address>
+        <phone>113333331</phone>
+        <url>http://www.ucc.ie</url>
+        <image>sabin.jpg</image>
+    </person>
+    <person>
+        <name>Sabinus Tabirca</name>
+        <address>WGB 1.81, UCC, Cork</address>
+        <phone>111444444</phone>
+        <url>http://www.ucc.ie</url>
+        <image>sabin.jpg</image>
+    </person>
+</people>
