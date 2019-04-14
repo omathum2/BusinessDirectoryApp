@@ -1,62 +1,30 @@
-
-
 import UIKit
 import CoreData
 
-class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    // array for biz type picker data
+    let bizTypePickerData = [String](arrayLiteral: "Bar Restaurant", "Bar", "Restaurant / Takeaway", "Convenience Store", "Hair Salon", "Financial Services", "Industrial")
     
     //core data objects context, entity and manageObjects
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
     var entity : NSEntityDescription! = nil
     var businessManagedObject : BusinessDirectory! = nil
-    
-    
-    func save(){ //save a new managed object
-        
-        //make a new managed object
-        //entity = NSEntityDescription.entity(forEntityName: "business", in: context)
-        businessManagedObject = BusinessDirectory(context: context)
-        
-        //fill with data from textfields
-        businessManagedObject.name    = nameTextField.text
-        businessManagedObject.phone   = phoneTextField.text
-        businessManagedObject.address = addressTextField.text
-        businessManagedObject.image = imageNameTextField.text
-        
-        //save
-        do{
-            try context.save()
-        }catch{
-            print("Core Data error")
-        }
-        saveImage(name: imageNameTextField.text!)
-    }
-    
-    func update(){ //save businessManagedObject
-        
-        //fill with data from textfields
-        businessManagedObject.name    = nameTextField.text
-        businessManagedObject.phone   = phoneTextField.text
-        businessManagedObject.address = addressTextField.text
-        businessManagedObject.image = imageNameTextField.text
-        
-        //save
-        do{
-            try context.save()
-        }catch{
-            print("Core Data error")
-        }
-        saveImage(name: imageNameTextField.text!)
-    }
-    
     
     //outlets and action
     @IBOutlet weak var nameTextField: UITextField!
     
+    @IBOutlet weak var bizType: UITextField!
+    
     @IBOutlet weak var phoneTextField: UITextField!
     
     @IBOutlet weak var addressTextField: UITextField!
+    
+    @IBOutlet weak var townTextField: UITextField!
+    
+    @IBOutlet weak var eircodeTextField: UITextField!
+    
+    @IBOutlet weak var urlTextField: UITextField!
     
     @IBOutlet weak var imageNameTextField: UITextField!
     
@@ -76,6 +44,114 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
             present(imagePicker, animated:true, completion: nil)
         }
     }
+    
+    @IBAction func addUpdatedAction(_ sender: Any) {
+        
+        if businessManagedObject != nil{
+            print("\n Name Update", (businessManagedObject.name))
+            update()
+        }else{
+            save()
+        }
+        
+        //force navigation back to TVC
+        navigationController?.popViewController(animated: true)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Do any additional setup after loading the view.
+        
+        self.title = "Add or Update"
+        
+        let bizTypePicker = UIPickerView()
+        bizType.inputView = bizTypePicker
+        bizTypePicker.delegate = self
+        
+        // present the data of businessManageObject
+        if businessManagedObject != nil{
+            
+            nameTextField.text    = businessManagedObject.name
+            bizType.text = businessManagedObject.bizType
+            urlTextField.text = businessManagedObject.url
+            phoneTextField.text   = businessManagedObject.phone
+            addressTextField.text = businessManagedObject.address
+            townTextField.text = businessManagedObject.town
+            eircodeTextField.text = businessManagedObject.eircode
+            imageNameTextField.text = businessManagedObject.image
+            
+            if imageNameTextField.text != nil{
+                getImage(name: imageNameTextField.text!)
+            }
+        }
+    }
+    
+    //functions to populate pickerview
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return bizTypePickerData.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return bizTypePickerData[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        bizType.text = bizTypePickerData[row]
+    }
+    
+    //save a new managed object
+    func save(){
+        
+        //make a new managed object
+        //entity = NSEntityDescription.entity(forEntityName: "business", in: context)
+        businessManagedObject = BusinessDirectory(context: context)
+        
+        //fill with data from textfields
+        businessManagedObject.name    = nameTextField.text
+        businessManagedObject.bizType = bizType.text
+        businessManagedObject.url = urlTextField.text
+        businessManagedObject.phone   = phoneTextField.text
+        businessManagedObject.address = addressTextField.text
+        businessManagedObject.town = townTextField.text
+        businessManagedObject.eircode = eircodeTextField.text
+        businessManagedObject.image = imageNameTextField.text
+        
+        //save
+        do{
+            try context.save()
+        }catch{
+            print("Core Data error")
+        }
+        saveImage(name: imageNameTextField.text!)
+    }
+    
+    func update(){ //save businessManagedObject
+        
+        //fill with data from textfields
+        businessManagedObject.name    = nameTextField.text
+        businessManagedObject.bizType = bizType.text
+        businessManagedObject.url = urlTextField.text
+        businessManagedObject.phone   = phoneTextField.text
+        businessManagedObject.address = addressTextField.text
+        businessManagedObject.town = townTextField.text
+        businessManagedObject.eircode = eircodeTextField.text
+        businessManagedObject.image = imageNameTextField.text
+        
+        //save
+        do{
+            try context.save()
+        }catch{
+            print("Core Data error")
+        }
+        saveImage(name: imageNameTextField.text!)
+    }
+    
+    
     func  imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
@@ -106,11 +182,12 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         let path = docPath.appendingPathComponent(name)
         
         // grab image
-        let data = pickedImageView.image!.pngData()
+        let data = pickedImageView.image?.pngData()
         
         // file manager save data
         fm.createFile(atPath: path, contents: data, attributes: nil)
     }
+    
     func getImage(name:String) {
         // get file mnager
         let fm = FileManager.default
@@ -125,40 +202,6 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
             pickedImageView.image = UIImage(contentsOfFile: path)
         }else{
             print("file does not exist")
-        }
-    }
-    
-    
-    @IBAction func addUpdatedAction(_ sender: Any) {
-        
-        
-        
-        if businessManagedObject != nil{
-            update()
-        }else{
-            save()
-        }
-        
-        //force navigation back to TVC
-        navigationController?.popViewController(animated: true)
-    }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
-        
-        self.title = "Add or Update"
-        
-        // present the data of businessManageObject
-        if businessManagedObject != nil{
-            nameTextField.text    = businessManagedObject.name
-            phoneTextField.text   = businessManagedObject.phone
-            addressTextField.text = businessManagedObject.address
-            imageNameTextField.text = businessManagedObject.image
-            
-            if imageNameTextField.text != nil{
-                getImage(name: imageNameTextField.text!)
-            }
         }
     }
     

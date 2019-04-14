@@ -54,7 +54,7 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
         
         if count == 0 {
             fromXMLtoCoreData()
-            print("\n xml core")
+//            print("\n xml core")
            
         }
         
@@ -65,7 +65,7 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
         
         do{
             try frc.performFetch()
-            print("\n Perform fetch worked")
+//            print("\n Perform fetch worked")
         }
         catch{print(" Fetch does not work")}
         
@@ -77,12 +77,12 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
     func makeRequest()->NSFetchRequest<NSFetchRequestResult>{
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "BusinessDirectory")
-        print("\n Fetch Request Done")
+//        print("\n Fetch Request Done")
         
         //describe how to sort and how to filter it
         let sorter = NSSortDescriptor(key: "name", ascending: true)
         request.sortDescriptors = [sorter]
-        print("\n Sort Done")
+//        print("\n Sort Done")
         
         
         // let predicate = NSPredicate(format: "%K == %@", "name", "sabin")
@@ -154,27 +154,65 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
         return cell
         
     }
+    
+    //functions to delete entries in table
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            // handle delete (by removing the data from your array and updating the tableview)
+            
+            //get the object to remove and delete it
+            businessManagedObject = (frc.object(at: indexPath) as! BusinessDirectory)
+            context.delete(businessManagedObject)
+            
+            //save the conext
+            do {try context.save()}
+            catch{}
+            
+            //preform  fetch the reload
+            do{try frc.performFetch()}
+            catch{}
+            
+            tableView.reloadData()
+        }
+    }
+    
  
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        print("segue activated")
+        if segue.identifier == "detailsSegue" {
+        print("details segue activated")
 
-        // Get the new view controller using segue.destination.
-        let destination = segue.destination as! BusinessViewController
+            // Get the new view controller using segue.destination.
+            let destination = segue.destination as! BusinessViewController
 
-        // Pass the selected object to the new view controller
-        let indexPath = self.tableView.indexPath(for: sender as! UITableViewCell)
+            // Pass the selected object to the new view controller
+            let indexPath = self.tableView.indexPath(for: sender as! UITableViewCell)
 
-        businessManagedObject = (frc.object(at: indexPath!) as! BusinessDirectory)
+            businessManagedObject = (frc.object(at: indexPath!) as! BusinessDirectory)
             
-            print("\n table view bManObject: ", "(businessManagedObject)")
+//                print("\n table view bManObject: ", "(businessManagedObject)")
 
-        destination.businessManagedObject = businessManagedObject
+            destination.businessManagedObject = businessManagedObject
             
             print("\n dest bManObject: ", "\(String(describing: destination.businessManagedObject))")
+        } else if segue.identifier == "addSegue" {
+            
+            // Get the new view controller using segue.destination.
+            let destination = segue.destination as! AddViewController
+            
+            // Pass the selected object to the new view controller
+            
+            print("\n table view bManObject: ", "(businessManagedObject)")
+            
+        }
     }
     
     //function to populate core data from XML

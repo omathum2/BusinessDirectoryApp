@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BusinessDirectory/BusinessTableViewController.swift"
-            timestampString = "576876701.718945"
+            timestampString = "576892972.412861"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "195"
-            endingLineNumber = "195"
+            startingLineNumber = "233"
+            endingLineNumber = "233"
             landmarkName = "fromXMLtoCoreData()"
             landmarkType = "7">
          </BreakpointContent>

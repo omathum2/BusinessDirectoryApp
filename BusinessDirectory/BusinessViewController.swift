@@ -1,4 +1,5 @@
 import UIKit
+import CoreData
 import MapKit
 import CoreLocation
 
@@ -15,6 +16,8 @@ class BusinessViewController: UIViewController {
     @IBOutlet weak var businessImage: UIImageView!
     
     @IBOutlet weak var businessLabel: UILabel!
+    
+    @IBOutlet weak var bizTypeLabel: UILabel!
     
     @IBOutlet weak var phoneNumber: UILabel!
     
@@ -55,6 +58,7 @@ class BusinessViewController: UIViewController {
         
         // populate the outlets with data
         businessLabel?.text = businessManagedObject?.name
+        bizTypeLabel?.text = businessManagedObject?.bizType
         businessImage?.image = UIImage(named: (businessManagedObject?.image)!)
         businessURL?.text = businessManagedObject?.url
         phoneNumber?.text = businessManagedObject?.phone
@@ -81,10 +85,11 @@ class BusinessViewController: UIViewController {
          mapViewer.isUserInteractionEnabled = true
          mapViewer.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.imageTap))
          */
-        
-        
-        
     
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.viewDidLoad()
     }
     
 
@@ -94,12 +99,21 @@ class BusinessViewController: UIViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
+        if segue.identifier == "webviewSegue" {
         
         // Get the new view controller using segue.destination.
         let destination = segue.destination as! WebViewController
         
         // Pass the selected object to the new view controller.
         destination.urlData = self.businessManagedObject.url
+            
+        } else if segue.identifier == "editSegue" {
+            let destination = segue.destination as! AddViewController
+            
+            // Pass the selected object to the new view controller.
+            destination.businessManagedObject = businessManagedObject
+            
+        }
     }
     
     /*
