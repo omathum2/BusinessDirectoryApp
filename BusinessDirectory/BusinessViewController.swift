@@ -113,17 +113,11 @@ class BusinessViewController: UIViewController {
             // Pass the selected object to the new view controller.
             destination.businessManagedObject = businessManagedObject
             
+            // Pass the selected object to the new view controller
+            print("\n BVC bManObject: ", (businessManagedObject.bizType))
+
+            
         }
     }
     
-    /*
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        // Get the new view controller using segue.destination.
-        let destination = segue.destination as! WebViewController
-        
-        // Pass the selected object to the new view controller.
-        destination.urlData = self.businessInfo.url
-    }
-    */
 }

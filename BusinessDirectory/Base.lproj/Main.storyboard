@@ -137,7 +137,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="bizTypeLabel" destination="hA4-GG-jc7" id="nLg-g8-E4L"/>
+                        <outlet property="bizTypeLabel" destination="hA4-GG-jc7" id="0I1-Qd-8BV"/>
                         <outlet property="businessAddressLabel" destination="Env-WL-Jzs" id="NZj-Lr-yWw"/>
                         <outlet property="businessImage" destination="LPa-X7-YGl" id="X97-uM-qwA"/>
                         <outlet property="businessLabel" destination="3yX-Cj-EKd" id="S64-5d-HIj"/>
@@ -162,10 +162,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="separatorColor" red="0.86951615579999997" green="0.92970620749999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="Rta-cE-VY6">
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="vTt-CI-Chl">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="FuM-Jx-Qkw" id="G4F-aO-qXE"/>
+                            </connections>
                         </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BusinessCell" rowHeight="96" id="f13-L8-THR" customClass="BusinessCell" customModule="BusinessDirectory" customModuleProvider="target">
@@ -215,8 +218,20 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="n26-YX-dHp" id="KDK-ry-7eB"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B1z-Bg-ETV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="n26-YX-dHp">
+                    <connections>
+                        <outlet property="delegate" destination="FuM-Jx-Qkw" id="Hus-1d-6gd"/>
+                        <outlet property="searchBar" destination="vTt-CI-Chl" id="awZ-5P-N9h"/>
+                        <outlet property="searchContentsController" destination="FuM-Jx-Qkw" id="vcg-yt-2zS"/>
+                        <outlet property="searchResultsDataSource" destination="FuM-Jx-Qkw" id="iRP-8u-Hp5"/>
+                        <outlet property="searchResultsDelegate" destination="FuM-Jx-Qkw" id="HDF-kB-xxk"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="988" y="132.68365817091455"/>
         </scene>
@@ -358,11 +373,8 @@
                                 <rect key="frame" x="21" y="116" width="332" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <action selector="businessType:" destination="C4g-ln-zMJ" eventType="editingDidEnd" id="Tgi-dg-WRx"/>
-                                </connections>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.86951615579999997" green="0.92970620749999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -370,7 +382,7 @@
                     </view>
                     <connections>
                         <outlet property="addressTextField" destination="aAz-Q6-fEG" id="zj6-qk-mr9"/>
-                        <outlet property="bizType" destination="WTL-Yi-Pt1" id="toT-Be-quy"/>
+                        <outlet property="bizTypeTextField" destination="WTL-Yi-Pt1" id="Dwk-FQ-eDk"/>
                         <outlet property="eircodeTextField" destination="PBd-jR-CXy" id="zLb-59-4us"/>
                         <outlet property="imageNameTextField" destination="Bd3-Sw-mk3" id="DTK-lr-P8j"/>
                         <outlet property="nameTextField" destination="DNV-dK-aHV" id="mgg-2P-DGU"/>
@@ -386,6 +398,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="slv-5G-GZh"/>
+        <segue reference="tQ4-C9-C8P"/>
     </inferredMetricsTieBreakers>
 </document>

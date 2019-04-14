@@ -5,6 +5,8 @@ import CoreData
 class BusinessCell: UITableViewCell {
     
     // outlets & actions
+    
+    
     @IBOutlet weak var businessImageView: UIImageView!
     
     @IBOutlet weak var businessNameView: UILabel!
@@ -26,13 +28,17 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
     var entity : NSEntityDescription! = nil
     var businessManagedObject : BusinessDirectory! = nil
     var frc : NSFetchedResultsController<NSFetchRequestResult>! = nil
-
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         self.tableView.backgroundColor = UIColor(red:0.85, green:0.92, blue:0.96, alpha:1.0)
         
         self.title = "Local Businesses"
+        
+        
+
+        
         
         //get the data from XML and store in var
 //        xmlBusiness = BusinessInfo(fromContentOfXML: "watergrasshill_business_directory.xml")
@@ -181,40 +187,6 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
         }
     }
     
- 
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "detailsSegue" {
-        print("details segue activated")
-
-            // Get the new view controller using segue.destination.
-            let destination = segue.destination as! BusinessViewController
-
-            // Pass the selected object to the new view controller
-            let indexPath = self.tableView.indexPath(for: sender as! UITableViewCell)
-
-            businessManagedObject = (frc.object(at: indexPath!) as! BusinessDirectory)
-            
-//                print("\n table view bManObject: ", "(businessManagedObject)")
-
-            destination.businessManagedObject = businessManagedObject
-            
-            print("\n dest bManObject: ", "\(String(describing: destination.businessManagedObject))")
-        } else if segue.identifier == "addSegue" {
-            
-            // Get the new view controller using segue.destination.
-            let destination = segue.destination as! AddViewController
-            
-            // Pass the selected object to the new view controller
-            
-            print("\n table view bManObject: ", "(businessManagedObject)")
-            
-        }
-    }
-    
     //function to populate core data from XML
     func fromXMLtoCoreData() {
         
@@ -266,4 +238,44 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
         
 
     }
+    
+    // search
+    // MARK: - Private instance methods
+    
+    
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "detailsSegue" {
+            print("details segue activated")
+            
+            // Get the new view controller using segue.destination.
+            let destination = segue.destination as! BusinessViewController
+            
+            // Pass the selected object to the new view controller
+            let indexPath = self.tableView.indexPath(for: sender as! UITableViewCell)
+            
+            businessManagedObject = (frc.object(at: indexPath!) as! BusinessDirectory)
+            
+            //                print("\n table view bManObject: ", "(businessManagedObject)")
+            
+            destination.businessManagedObject = businessManagedObject
+            
+            print("\n dest bManObject: ", "\(String(describing: destination.businessManagedObject))")
+        } else if segue.identifier == "addSegue" {
+            
+            // Get the new view controller using segue.destination.
+            let destination = segue.destination as! AddViewController
+            
+            // Pass the selected object to the new view controller
+            print("\n table view bManObject: ", "(businessManagedObject)")
+            
+        }
+    }
+    
+//end class
 }
+
+

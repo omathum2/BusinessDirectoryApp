@@ -1,20 +1,23 @@
 import UIKit
 import CoreData
 
-class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, NSFetchedResultsControllerDelegate { //UIPickerViewDelegate, UIPickerViewDataSource,
     
     // array for biz type picker data
-    let bizTypePickerData = [String](arrayLiteral: "Bar Restaurant", "Bar", "Restaurant / Takeaway", "Convenience Store", "Hair Salon", "Financial Services", "Industrial")
+    
     
     //core data objects context, entity and manageObjects
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var entity : NSEntityDescription! = nil
     var businessManagedObject : BusinessDirectory! = nil
     
+    var bizTypePickerDataArray : [BusinessDirectory] = []
+    var moc: NSManagedObjectContext!
+    
     //outlets and action
     @IBOutlet weak var nameTextField: UITextField!
     
-    @IBOutlet weak var bizType: UITextField!
+    @IBOutlet weak var bizTypeTextField: UITextField!
     
     @IBOutlet weak var phoneTextField: UITextField!
     
@@ -65,15 +68,23 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         
         self.title = "Add or Update"
         
-        let bizTypePicker = UIPickerView()
-        bizType.inputView = bizTypePicker
-        bizTypePicker.delegate = self
+        //stuff for uipicker
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "BusinessDirectory")
+//        let sort = NSSortDescriptor(key: "name", ascending: true)
+//        fetchRequest.sortDescriptors = [sort]
+        
+//        let bizTypePicker = UIPickerView()
+//        bizTypeTextField.inputView = bizTypePicker
+//        bizTypePicker.showsSelectionIndicator = true
+//        bizTypePicker.delegate = self
+//        bizTypePicker.dataSource = self
+//
         
         // present the data of businessManageObject
         if businessManagedObject != nil{
             
             nameTextField.text    = businessManagedObject.name
-            bizType.text = businessManagedObject.bizType
+            bizTypeTextField.text = businessManagedObject.bizType
             urlTextField.text = businessManagedObject.url
             phoneTextField.text   = businessManagedObject.phone
             addressTextField.text = businessManagedObject.address
@@ -87,22 +98,23 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         }
     }
     
-    //functions to populate pickerview
+//    //functions to populate pickerview
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return bizTypePickerData.count
+        return bizTypePickerDataArray.count
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return bizTypePickerData[row]
+        return bizTypePickerDataArray[row].bizType
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        bizType.text = bizTypePickerData[row]
+        bizTypeTextField.text = bizTypePickerDataArray[row].bizType
     }
+
     
     //save a new managed object
     func save(){
@@ -113,7 +125,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         
         //fill with data from textfields
         businessManagedObject.name    = nameTextField.text
-        businessManagedObject.bizType = bizType.text
+        businessManagedObject.bizType = bizTypeTextField.text
         businessManagedObject.url = urlTextField.text
         businessManagedObject.phone   = phoneTextField.text
         businessManagedObject.address = addressTextField.text
@@ -134,7 +146,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         
         //fill with data from textfields
         businessManagedObject.name    = nameTextField.text
-        businessManagedObject.bizType = bizType.text
+        businessManagedObject.bizType = bizTypeTextField.text
         businessManagedObject.url = urlTextField.text
         businessManagedObject.phone   = phoneTextField.text
         businessManagedObject.address = addressTextField.text
