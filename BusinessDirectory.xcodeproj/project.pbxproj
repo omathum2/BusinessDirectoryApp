@@ -32,7 +32,6 @@
 		EC796413222F0F0C00635DE4 /* ryalls.png in Resources */ = {isa = PBXBuildFile; fileRef = EC796412222F0F0C00635DE4 /* ryalls.png */; };
 		EC796415222F0F1D00635DE4 /* hyperion.png in Resources */ = {isa = PBXBuildFile; fileRef = EC796414222F0F1D00635DE4 /* hyperion.png */; };
 		EC796417222FD7B200635DE4 /* wgh.png in Resources */ = {isa = PBXBuildFile; fileRef = EC796416222FD7B200635DE4 /* wgh.png */; };
-		EC7DEA4222634652001C29EA /* SearchDisplayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7DEA4122634652001C29EA /* SearchDisplayController.swift */; };
 		EC938F5422537044005A6A19 /* BusinessDirectory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EC938F5222537044005A6A19 /* BusinessDirectory.xcdatamodeld */; };
 		EC945F08223131BC0081E77F /* Icon-256.png in Resources */ = {isa = PBXBuildFile; fileRef = EC945F07223131BC0081E77F /* Icon-256.png */; };
 		ECB9BF102253B96D00DAA2AD /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB9BF0F2253B96D00DAA2AD /* AddViewController.swift */; };
@@ -76,7 +75,6 @@
 		EC796412222F0F0C00635DE4 /* ryalls.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ryalls.png; sourceTree = "<group>"; };
 		EC796414222F0F1D00635DE4 /* hyperion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hyperion.png; sourceTree = "<group>"; };
 		EC796416222FD7B200635DE4 /* wgh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wgh.png; sourceTree = "<group>"; };
-		EC7DEA4122634652001C29EA /* SearchDisplayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDisplayController.swift; sourceTree = "<group>"; };
 		EC938F5322537044005A6A19 /* BusinessDirectory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BusinessDirectory.xcdatamodel; sourceTree = "<group>"; };
 		EC945F07223131BC0081E77F /* Icon-256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-256.png"; path = "appiconmaker.co_ios/Icon-256.png"; sourceTree = "<group>"; };
 		ECB9BF0F2253B96D00DAA2AD /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
@@ -162,7 +160,6 @@
 			children = (
 				ECFC6B6B221AFC7C00A03795 /* AppDelegate.swift */,
 				ECFC6B6F221AFC7C00A03795 /* Main.storyboard */,
-				EC7DEA4122634652001C29EA /* SearchDisplayController.swift */,
 				ECFC6B83221B106A00A03795 /* BusinessTableViewController.swift */,
 				ECFC6B81221B050800A03795 /* BusinessViewController.swift */,
 				ECB9BF0F2253B96D00DAA2AD /* AddViewController.swift */,
@@ -284,7 +281,6 @@
 				ECFC6B80221B02B400A03795 /* Business.swift in Sources */,
 				ECFC6B84221B106A00A03795 /* BusinessTableViewController.swift in Sources */,
 				ECFC6B90221BFDA000A03795 /* XMLBusinessParser.swift in Sources */,
-				EC7DEA4222634652001C29EA /* SearchDisplayController.swift in Sources */,
 				ECFC6B82221B050800A03795 /* BusinessViewController.swift in Sources */,
 				ECFC6B6C221AFC7C00A03795 /* AppDelegate.swift in Sources */,
 				ECFC6B88221B1D0E00A03795 /* BusinessInfo.swift in Sources */,

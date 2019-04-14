@@ -14,11 +14,13 @@ class BusinessCell: UITableViewCell {
     @IBOutlet weak var businessTypeView: UILabel!
     
     
+    
+    
 }
 
 //main class for populating tableview
-class BusinessTableViewController: UITableViewController, NSFetchedResultsControllerDelegate  {
-
+class BusinessTableViewController: UITableViewController, NSFetchedResultsControllerDelegate, UISearchResultsUpdating  {
+// ,
     
     // var of type BusinessInfo
 //    var xmlBusiness : BusinessInfo!
@@ -29,19 +31,16 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
     var businessManagedObject : BusinessDirectory! = nil
     var frc : NSFetchedResultsController<NSFetchRequestResult>! = nil
     
+    var tableData = [BusinessDirectory]()
+    var filteredTableData = [String]()
+    var resultSearchController = UISearchController()
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         self.tableView.backgroundColor = UIColor(red:0.85, green:0.92, blue:0.96, alpha:1.0)
         
         self.title = "Local Businesses"
-        
-        
-
-        
-        
-        //get the data from XML and store in var
-//        xmlBusiness = BusinessInfo(fromContentOfXML: "watergrasshill_business_directory.xml")
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "BusinessDirectory")
         
@@ -57,11 +56,8 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
         //catch nothing
         }
         
-        
         if count == 0 {
             fromXMLtoCoreData()
-//            print("\n xml core")
-           
         }
         
         //make a frc and fetch
@@ -71,19 +67,52 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
         
         do{
             try frc.performFetch()
-//            print("\n Perform fetch worked")
         }
         catch{print(" Fetch does not work")}
         
-        //print("\(NSHomeDirectory())")
+        
+        
+//        //Create & Display Search Bar
+        resultSearchController = ({
+
+            let controller = UISearchController(searchResultsController: nil)
+            controller.searchResultsUpdater = self
+            controller.dimsBackgroundDuringPresentation = false
+            controller.searchBar.sizeToFit()
+
+            tableView.tableHeaderView = controller.searchBar
+
+            return controller
+        })()
+        
+        // Reload the table
+        tableView.reloadData()
         
 
+    }
+    
+    //search queries
+    override func viewWillAppear(_ animated: Bool) {
+        
+        var error:NSError?
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "BusinessDirectory")
+        
+        //tableData = context?.executeFetchRequest() as! [BusinessDirectory]
+        
+        self.tableView.reloadData()
+        
     }
     
     func makeRequest()->NSFetchRequest<NSFetchRequestResult>{
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "BusinessDirectory")
-//        print("\n Fetch Request Done")
+        print("\n Fetch Request", (request))
+        
+        let tableData = request
+        
+        print("\n td in makeRequest()", (tableData))
+        
         
         //describe how to sort and how to filter it
         let sorter = NSSortDescriptor(key: "name", ascending: true)
@@ -138,9 +167,20 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
  
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if  (resultSearchController.isActive) {
+            
+            return filteredTableData.count
+        
+        } else {
+            
+            return frc.sections![section].numberOfObjects
+        
+        }
+        
         // #warning Incomplete implementation, return the number of rows
         //return manyBusinessesInfo.count()
-        return frc.sections![section].numberOfObjects
+        
     }
 
 
@@ -148,16 +188,25 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "BusinessCell", for: indexPath) as! BusinessCell
         
-        businessManagedObject = frc.object(at: indexPath) as? BusinessDirectory
+        if (resultSearchController.isActive) {
+            
+            cell.textLabel?.text = filteredTableData[indexPath.row]
+            
+            return cell
+        }
+        else {
         
-        cell.businessNameView?.text = businessManagedObject.name
-//        print("\n bManObject: ", "\(businessManagedObject)")
-        
-        cell.businessTypeView?.text = businessManagedObject?.bizType
-//
-        cell.businessImageView!.image = UIImage(named: (businessManagedObject?.image)!)
-        
-        return cell
+            businessManagedObject = frc.object(at: indexPath) as? BusinessDirectory
+            
+            cell.businessNameView?.text = businessManagedObject.name
+    //        print("\n bManObject: ", "\(businessManagedObject)")
+            
+            cell.businessTypeView?.text = businessManagedObject?.bizType
+    //
+            cell.businessImageView!.image = UIImage(named: (businessManagedObject?.image)!)
+            
+            return cell
+        }
         
     }
     
@@ -219,9 +268,6 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
             businessManagedObject.url = business.url
 //            print("\n XMLcore bname ", "\(businessManagedObject)")
             
-            
-            
-            
             //save
             do{
                 try context.save()
@@ -229,18 +275,45 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
             }catch{
                 print("Core Data error")
             }
-
-           
             //copyImage(name: business.image!)
         
         }
         
-        
-
     }
     
-    // search
     // MARK: - Private instance methods
+    //search funcs
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        filteredTableData.removeAll(keepingCapacity: false)
+        
+        //var error:NSError?
+        
+        let searchString = searchController.searchBar.text!
+
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "BusinessDirectory")
+        
+        do {
+            tableData = try context.fetch(fetchRequest) as! [BusinessDirectory]
+        } catch {
+            print("fetch for array failed")
+        }
+        
+        print("\n tableDataArray Contents: ", (tableData))
+
+        let predicate = NSPredicate(format: "%K CONTAINS[c] %@", searchString)
+        //"SELF CONTAINS[c] %@"
+       
+        let array = NSArray(array: tableData).filtered(using: predicate)
+        
+//        let array = (tableData as NSArray).filtered(using: predicate)
+
+        filteredTableData = array as! [String]
+
+        
+
+        self.tableView.reloadData()
+    }
     
     
     // MARK: - Navigation
