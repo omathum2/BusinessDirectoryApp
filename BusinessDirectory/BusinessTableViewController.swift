@@ -5,25 +5,18 @@ import CoreData
 class BusinessCell: UITableViewCell {
     
     // outlets & actions
-    
-    
     @IBOutlet weak var businessImageView: UIImageView!
     
     @IBOutlet weak var businessNameView: UILabel!
     
     @IBOutlet weak var businessTypeView: UILabel!
-    
-    
-    
-    
+
 }
 
 //main class for populating tableview
-class BusinessTableViewController: UITableViewController, NSFetchedResultsControllerDelegate, UISearchResultsUpdating  {
-// ,
-    
-    // var of type BusinessInfo
-//    var xmlBusiness : BusinessInfo!
+class BusinessTableViewController: UITableViewController, NSFetchedResultsControllerDelegate, UISearchBarDelegate  {
+//UISearchResultsUpdating,
+
     
     // Core data objects context entity managedObject and frc
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -32,6 +25,7 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
     var frc : NSFetchedResultsController<NSFetchRequestResult>! = nil
     
     var tableData = [BusinessDirectory]()
+    
     var filteredTableData = [String]()
     var resultSearchController = UISearchController()
     
@@ -49,9 +43,10 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
         //calls function that clears out Core Data
         deleteAllData(entity: "BusinessDirectory")
         
+        //what does this do?
         do { try
         count = context.count(for: makeRequest())
-        print("\n", count)
+            print("\n count:", count)
         } catch {
         //catch nothing
         }
@@ -62,6 +57,7 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
         
         //make a frc and fetch
         frc = NSFetchedResultsController(fetchRequest: makeRequest(), managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        print("\n frc: ", (frc))
         
         frc.delegate = self
         
@@ -70,22 +66,8 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
         }
         catch{print(" Fetch does not work")}
         
+        setUpSearchBar()
         
-        
-//        //Create & Display Search Bar
-        resultSearchController = ({
-
-            let controller = UISearchController(searchResultsController: nil)
-            controller.searchResultsUpdater = self
-            controller.dimsBackgroundDuringPresentation = false
-            controller.searchBar.sizeToFit()
-
-            tableView.tableHeaderView = controller.searchBar
-
-            return controller
-        })()
-        
-        // Reload the table
         tableView.reloadData()
         
 
@@ -94,34 +76,37 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
     //search queries
     override func viewWillAppear(_ animated: Bool) {
         
-        var error:NSError?
-        
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "BusinessDirectory")
-        
-        //tableData = context?.executeFetchRequest() as! [BusinessDirectory]
-        
-        self.tableView.reloadData()
+        self.viewDidLoad()
+//        self.tableView.reloadData()
         
     }
     
-    func makeRequest()->NSFetchRequest<NSFetchRequestResult>{
+    func makeRequest(selectedScopeIdx:Int?=nil,targetText:String?=nil)->NSFetchRequest<NSFetchRequestResult>{
+        
+        print("targetText", (targetText))
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "BusinessDirectory")
-        print("\n Fetch Request", (request))
         
-        let tableData = request
+        if selectedScopeIdx != nil && targetText != nil{
+
+            var filterKeyword = ""
+            switch selectedScopeIdx! {
+            case 0:
+                filterKeyword = "name"
+            case 1:
+                filterKeyword = "bizType"
+            default:
+                filterKeyword = "name"
+            }
         
-        print("\n td in makeRequest()", (tableData))
-        
+            var predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", targetText!)
+            request.predicate = predicate
+        }
         
         //describe how to sort and how to filter it
         let sorter = NSSortDescriptor(key: "name", ascending: true)
         request.sortDescriptors = [sorter]
-//        print("\n Sort Done")
-        
-        
-        // let predicate = NSPredicate(format: "%K == %@", "name", "sabin")
-        //request.predicate = predicate
+        //        print("\n Sort Done")
         
         return request
         
@@ -168,18 +153,7 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if  (resultSearchController.isActive) {
-            
-            return filteredTableData.count
-        
-        } else {
-            
-            return frc.sections![section].numberOfObjects
-        
-        }
-        
-        // #warning Incomplete implementation, return the number of rows
-        //return manyBusinessesInfo.count()
+        return frc.sections![section].numberOfObjects
         
     }
 
@@ -188,13 +162,13 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "BusinessCell", for: indexPath) as! BusinessCell
         
-        if (resultSearchController.isActive) {
-            
-            cell.textLabel?.text = filteredTableData[indexPath.row]
-            
-            return cell
-        }
-        else {
+//        if (resultSearchController.isActive) {
+//
+//            cell.textLabel?.text = filteredTableData[indexPath.row]
+//
+//            return cell
+//        }
+//        else {
         
             businessManagedObject = frc.object(at: indexPath) as? BusinessDirectory
             
@@ -206,7 +180,7 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
             cell.businessImageView!.image = UIImage(named: (businessManagedObject?.image)!)
             
             return cell
-        }
+//        }
         
     }
     
@@ -253,7 +227,6 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
         
         for business in businesses {
             
-            //entity = NSEntityDescription.entity(forEntityName: "LocalBusiness", in: context)
             businessManagedObject = BusinessDirectory(context: context)
             
             //fill with data from textfields
@@ -282,38 +255,80 @@ class BusinessTableViewController: UITableViewController, NSFetchedResultsContro
     }
     
     // MARK: - Private instance methods
-    //search funcs
-    func updateSearchResults(for searchController: UISearchController) {
+    
+    //new search functions
+    fileprivate func setUpSearchBar() {
         
-        filteredTableData.removeAll(keepingCapacity: false)
+        let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 65))
         
-        //var error:NSError?
+        searchBar.showsScopeBar = true
+        searchBar.scopeButtonTitles = ["Name","Business Type"]
+        searchBar.selectedScopeButtonIndex = 0
         
-        let searchString = searchController.searchBar.text!
-
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "BusinessDirectory")
+        searchBar.delegate = self
         
-        do {
-            tableData = try context.fetch(fetchRequest) as! [BusinessDirectory]
-        } catch {
-            print("fetch for array failed")
+        self.tableView.tableHeaderView = searchBar
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        guard !searchText.isEmpty else {
+            
+            tableView.reloadData()
+            return
         }
         
-        print("\n tableDataArray Contents: ", (tableData))
-
-        let predicate = NSPredicate(format: "%K CONTAINS[c] %@", searchString)
-        //"SELF CONTAINS[c] %@"
-       
-        let array = NSArray(array: tableData).filtered(using: predicate)
+        frc = NSFetchedResultsController(fetchRequest: makeRequest(selectedScopeIdx: searchBar.selectedScopeButtonIndex, targetText:searchText), managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         
-//        let array = (tableData as NSArray).filtered(using: predicate)
-
-        filteredTableData = array as! [String]
-
+        frc.delegate = self
         
-
-        self.tableView.reloadData()
+        do{
+            try frc.performFetch()
+        }
+        catch{print(" Fetch does not work")}
+        
+        
+//        print("\n frc from searchbar: ", (frc))
+//
+//        frc = makeRequest(selectedScopeIdx: searchBar.selectedScopeButtonIndex, targetText:searchText)
+        tableView.reloadData()
+        print(searchText)
+        
+    
     }
+    
+    //search funcs
+//    func updateSearchResults(for searchController: UISearchController) {
+//
+//        filteredTableData.removeAll(keepingCapacity: false)
+//
+//        //var error:NSError?
+//
+//        let searchString = searchController.searchBar.text!
+//
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "BusinessDirectory")
+//
+//        do {
+//            tableData = try context.fetch(fetchRequest) as! [BusinessDirectory]
+//        } catch {
+//            print("fetch for array failed")
+//        }
+//
+//        print("\n tableDataArray Contents: ", (tableData))
+//
+//        let predicate = NSPredicate(format: "%K CONTAINS[c] %@", searchString)
+//        //"SELF CONTAINS[c] %@"
+//
+//        let array = NSArray(array: tableData).filtered(using: predicate)
+//
+////        let array = (tableData as NSArray).filtered(using: predicate)
+//
+//        filteredTableData = array as! [String]
+//
+//
+//
+//        self.tableView.reloadData()
+//    }
     
     
     // MARK: - Navigation

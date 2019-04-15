@@ -136,6 +136,7 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         //save
         do{
             try context.save()
+            print("new entry saved", (businessManagedObject.name))
         }catch{
             print("Core Data error")
         }
@@ -157,6 +158,7 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         //save
         do{
             try context.save()
+            print("new entry saved", (businessManagedObject.name))
         }catch{
             print("Core Data error")
         }
